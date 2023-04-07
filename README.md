@@ -1,0 +1,1 @@
+## The backend for my [PeripheralsManager](https://github.com/3ncy/PeripheralsManager) repository.

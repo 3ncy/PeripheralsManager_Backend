@@ -9,16 +9,26 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(docs));
 // source of some (most, lol) stuff: https://www.section.io/engineering-education/documenting-node-js-rest-api-using-swagger/
 //TODO: versionning!!! looks like there is a lib to help, or just slap "/v1/" in the url
 
+//TODO: ratelimits
+
 // get all the routes and publish them on the server
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const profilesRouter = require('./routes/profiles')
 const devicesRouter = require('./routes/devices')
 
+//TODO: add the middleware for decryption of requests
+//  it will be indicated by a custom header that the content is encrypted by the server's public key.
+//  the middleware will decypher the request, if neccessary,
+
+// the authenticatin middleware will prolly sit somewhere in here, will inject the current user's GUID into the request
+//TODO: add all the 400s to all the endpoints' responses requiring authentication
+
+
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
-app.use('/profiles', profilesRouter); //TODO: add the middleware for authentization
-app.use('/devices', devicesRouter); //TODO: add the middleware for authentization
+app.use('/profiles', profilesRouter); //TODO: add the middleware for authentication
+app.use('/devices', devicesRouter); //TODO: add the middleware for authentication
 
 //#region object signatures
 const GUID = "guid"; const DEVICE = "device";

@@ -9,7 +9,7 @@ module.exports = {
                 // content-type
                 "application/json": {
                     schema: {
-                        $ref: "#/components/schemas/User"
+                        $ref: "#/components/schemas/userRegisterRequest"
                     },
                 },
             },
@@ -17,8 +17,10 @@ module.exports = {
         responses: {
             201: {
                 description: "User created successfully"
-            }
-        }
+            },
+            400: {
+                description: "One or more values were invalid."
+            },
+        },
     },
-
 }

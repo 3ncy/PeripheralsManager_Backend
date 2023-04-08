@@ -14,8 +14,8 @@ module.exports = {
     ...components,
     paths: {
         ...auth,
-        // ...profiles,
-        // ...devices,
+        ...profiles,
+        ...devices,
         ...misc,
     },
 };

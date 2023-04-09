@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 // app.use(express.json()); //idk, may be needed, I just remembered this
 
+const config = require('./config');
+
 
 const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs');
@@ -9,10 +11,13 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(docs));
 // source of some (most, lol) stuff: https://www.section.io/engineering-education/documenting-node-js-rest-api-using-swagger/
 //TODO: versionning!!! looks like there is a lib to help, or just slap "/v1/" in the url
 
-//TODO: ratelimits
+//TODO: ratelimits, I've heard there is some handy lib for that...?
+
+
+
 
 // get all the routes and publish them on the server
-const indexRouter = require('./routes/index');
+const miscRouter = require('./routes/misc');
 const authRouter = require('./routes/auth');
 const profilesRouter = require('./routes/profiles')
 const devicesRouter = require('./routes/devices')
@@ -25,7 +30,7 @@ const devicesRouter = require('./routes/devices')
 //TODO: add all the 400s to all the endpoints' responses requiring authentication
 
 
-app.use('/', indexRouter);
+app.use('/', miscRouter);
 app.use('/auth', authRouter);
 app.use('/profiles', profilesRouter); //TODO: add the middleware for authentication
 app.use('/devices', devicesRouter); //TODO: add the middleware for authentication
@@ -68,10 +73,10 @@ let device = {
 
 //basic 404 error handle
 app.use((req, res, next) => {
-    //I *think* here it should go only on 404 cause all the pages above weren't found
-    res.send("Page not found (◞‸◟；)");
+    //I *think* here it should go only on 404 cause all the pages above weren't found    
+    res.status(404).send("Page not found (◞‸◟；)");
 });
 
-app.listen(54321, () => { //TODO: specify port in ".env" and read it like: `const PORT = process.env.PORT || 4111;`
+app.listen(config.PORT, () => {
     console.log("Server loaded and (hopefully) ready to go!");
 });

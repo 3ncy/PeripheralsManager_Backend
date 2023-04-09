@@ -4,7 +4,7 @@ module.exports = router;
 
 
 // let profile = {
-//     id: GUID,
+//     id_profile: GUID,
 //     name: "Profil 1",
 //     id_user: GUID,
 //     devices: [
@@ -14,7 +14,7 @@ module.exports = router;
 
 /// get a profile by it's id
 router.get('/:id', (req, res) => {
-
+    
 });
 
 /// create or update an existing profile
@@ -24,6 +24,9 @@ router.put('/:id', (req, res) => {
     //I should prolly overwrite the profile.id_user with the current logged user's guid
 
     //I should check all the devices' device.id_user if they belong to the user trying to add the profile
+
+
+    // if the devices listed in the profile don't exist, create them
 });
 
 /// delete the specified profile

@@ -41,8 +41,17 @@ module.exports = { //TODO: fill out the real strings and values
                     },
                     required: true,
                     description: "GUID" //TODO: add description to all other places too
-                }
+                },
             ],
+            requestBody: {
+                content: {
+                    'application/json': {
+                        schema: {
+                            $ref: "#/components/schemas/device"
+                        },
+                    },
+                },
+            },
             responses: {
                 200: { description: "ok" },
                 201: {

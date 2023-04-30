@@ -43,6 +43,15 @@ module.exports = { //TODO: fill out the real strings and shit
                     description: "GUID" //TODO: add description to all other places too
                 }
             ],
+            requestBody: {
+                content: {
+                    'application/json': {
+                        schema: {
+                            $ref: "#/components/schemas/profile"
+                        },
+                    },
+                },
+            },
             responses: {
                 200: { description: "ok" },
                 201: {

@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 module.exports = router;
 
-const db = require('../db')
+const db = require('../db');
 
 // let device = {
-//     id_device: GUID,
+//     id_configuration: GUID,
 //     name: "device name",
 //     type: "audio",
 //     attribute: null, // whatever, it depends on the type
-//     id_user: GUID
+//     id_user: GUID,
+//     id_profile: GUID
 // }
 //
 //  //NOTE: if this were in a normal language, I'd use an enum, but it's JS...
@@ -20,8 +21,8 @@ const db = require('../db')
 router.get('/:id', async (req, res) => {
     const id = req.params.id;
 
-    let device = await getDevice(id);
-    console.log(device);
+    let device = await db.getDevice(id);
+    // console.log(device);
 
     if (typeof device === "undefined") {
         res.sendStatus(404);
@@ -30,47 +31,36 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-async function getDevice(id) {
-    let row = (await db.query('SELECT * FROM devices WHERE id_device = $1::uuid;', [id])).rows[0]; //TODO: handle errors lol
-    return row;
-}
-
 /// add or modify a device
 // requires authentication
 router.put('/:id', async (req, res) => {
-
-
     let device = req.body;
-    // console.log(req);
-    // console.log(req.body);
-    // console.log("received device:")
-    // console.log(device);
 
     const id = req.params.id; //todo: check together this id and the id from the object... I guess the one in url should be authoritative, or just return 400 and fuck off
 
 
-    let oldDevice = await getDevice(id);
+    let oldDevice = await db.getDevice(id);
     if (typeof oldDevice === "undefined") { //device not found -> create new        
-        let result = await db.query(
-            "INSERT INTO devices VALUES ($1::uuid, $2::text, $3::text, $4::integer, $5::uuid);",
-            [device.id_device, device.name, device.type, device.attribute, device.id_user]
-        );
+
+        let result = db.addDevice(device);//TODO: set status using the result variable
         res.status(201).send(device);
+        return;
+
     } else { //device found -> modify it
-        // device.id_device ??= oldDevice.id_device; //hmm, not sure abt this one, prolly it shouldn't be possible to change since it's the index in the db? idk, may ask during the lesson
-        device.id_device = id; // ???? idk
-        device.name ??= oldDevice.name;
-        device.type ??= oldDevice.type; //TODO: should check if the type is valid
-        device.attribute ??= oldDevice.attribute;
-        device.id_user ??= oldDevice.id_user;
 
-        let result = await db.query(
-            "UPDATE devices SET name=$2::text, type=$3::text, attribute=$4::integer, id_user=$5::uuid WHERE devices.id_device=$1::uuid",
-            [device.id_device, device.name, device.type, device.attribute, device.id_user]
-        );//TODO: set status using the result variable
+        if (id != device.id_configuration) {
+            res.status(400).send("IDs don't match!");
+        }
+
+        //TODO: check if data is valid, (no nulls), Maybe I could extract the checking into middleware?
+        if (device.type !== 'audio' || device.type !== 'pointer') {
+            res.status(400).send("Invalid device type");
+        }
+
+        let result = db.updateDevice(device)//TODO: set status using the result variable
         res.status(200).send(device);
+        return;
     }
-
 
     //TODO: error handling
 
@@ -81,4 +71,8 @@ router.put('/:id', async (req, res) => {
 // requires authentication
 router.delete('/:id', (req, res) => {
     //not sure how needed, maybe once a user is deleted...?
+    //but that should be handled by cascading in the db.
+    //will probably leave this out, unless it's *really* needed to be 'crud'
+    res.setHeader('Allow', 'GET, PUT');
+    res.sendStatus(405); //405 - Method not allowed 
 });

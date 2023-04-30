@@ -15,13 +15,13 @@ module.exports = {
         },
         responses: {
             200: {
-                description: "User successfully logged in"
+                description: "User successfully logged in."
             },
             400: {
                 description: ""
             },
             404: {
-                description: "User not found"
+                description: "User not found."
             }
         }
     }

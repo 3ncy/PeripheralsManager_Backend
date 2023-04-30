@@ -3,8 +3,8 @@ module.exports = {
         schemas: {
             //TODO: all this lol
 
-            
-            
+
+
             // id model
             id: {
                 type: "string",
@@ -33,6 +33,11 @@ module.exports = {
                         type: "integer" //for now, when I add more device types, this will likely expand/change
                     },
                     id_user: {
+                        type: "GUID",
+                        description: "",
+                        example: ""
+                    },
+                    id_profile: {
                         type: "GUID",
                         description: "",
                         example: ""
@@ -90,7 +95,7 @@ module.exports = {
                     },
                 },
             },
-            
+
             // user register request
             userRegisterRequest: {
                 type: "object",

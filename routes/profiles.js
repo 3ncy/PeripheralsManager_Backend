@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 module.exports = router;
 
+const db = require('../db');
+
 
 // let profile = {
 //     id_profile: GUID,
@@ -13,23 +15,81 @@ module.exports = router;
 // }
 
 /// get a profile by it's id
-router.get('/:id', (req, res) => {
-    
+router.get('/:id', async (req, res) => {
+    const id = req.params.id;
+
+    let profile = await db.getProfile(id);
+
+    // console.log(typeof profile);
+
+    if (typeof profile === 'undefined') {
+        res.sendStatus(404);
+        return;
+    }
+
+    profile.devices = await db.getProfileDevices(profile.id_profile);
+    res.send(profile);
 });
+
 
 /// create or update an existing profile
 // requires authentication
-router.put('/:id', (req, res) => { 
+router.put('/:id', async (req, res) => {
 
+    let profile = req.body;
+
+    const id = req.params.id; //todo: check together this id and the id from the object... I guess the one in url should be authoritative, or just return 400 and fuck off
+
+    let isNew = false;
     //I should prolly overwrite the profile.id_user with the current logged user's guid
+    try {
 
-    //I should check all the devices' device.id_user if they belong to the user trying to add the profile
 
+        let oldProfile = await db.getProfile(id)
+        if (typeof oldProfile === 'undefined') {
+            let result = db.addProfile(profile);
+            isNew = true;
+        } else {
+            let result = db.updateProfile(profile);
+        }
+
+
+        for (let device of profile.devices) {
+
+            //I should check all the devices' device.id_user if they belong to the user trying to add the profile
+
+            //TODO: verify and parse all the devices. Should prolly make a method in ./devices.js
+            let oldDevice = await db.getDevice(device.id_device);
+            
+            if (typeof oldDevice === 'undefined') {
+                let result = await db.addDevice(device); //TODO: figure out returning errors
+            } else {
+                let result = await db.updateDevice(device); //TODO: figure out returning errors
+            }
+
+        }
+    }
+    catch (error) {
+        console.log(error)
+        res.status(400).send("Some errors have occured!"); //TODO: prolly should b more descriptive
+        return;
+    }
+
+
+    if (isNew) { //a new profile has been created
+        res.status(201).send(profile);
+    } else {
+        res.status(200).send(profile);
+    }
 
     // if the devices listed in the profile don't exist, create them
 });
 
 /// delete the specified profile
 // requires authentication
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
+    const id = req.params.id;
+
+    let result = db.deleteProfile(id); //TODO: error handling
+    res.send("ok");
 });

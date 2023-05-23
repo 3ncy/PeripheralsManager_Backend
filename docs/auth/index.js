@@ -8,5 +8,9 @@ module.exports = {
     },
     '/auth/login':{
         ...login,
+    },
+    '/auth/public-key': {
+        //TODO: document this endpoint. It simply returns the current public key used by the server.
+        //this isn't used by the official client, that one has the pub key hardcoded, cause it's more secure. I don't care.
     }
 }

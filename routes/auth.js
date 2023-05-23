@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 module.exports = router;
 
+const config = require('../config');
+
 // let user = {
 //     id_user: GUID,
 //     name: "Jmeno",
@@ -28,3 +30,7 @@ router.post('/login', (req, res) => {
 //NOTE: logout? 🤔
 
 //NOTE: maybe allow return guid to a login name? for example to allow simple sharing of profiles by the user's name
+
+router.get('/public-key', (req, res) => {
+    res.send(config.PUBLIC_KEY);
+});

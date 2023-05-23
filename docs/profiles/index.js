@@ -1,4 +1,5 @@
 module.exports = { //TODO: fill out the real strings and shit
+    //TODO: add 401 and 403 to all endpoints that need it
     '/profiles/{id}': {
         get: {
             tags: ["profiles"],

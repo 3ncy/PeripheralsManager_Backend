@@ -12,3 +12,13 @@ router.get('/', (req, res) => {
 router.get('/health', (req, res) => {
     res.send("Yup, the API seems to be live. ✽-(^▽^)/✽");
 });
+
+
+const auth = require('../authMW')
+router.post('/authtest', auth, (req, res) => {
+    if (req.validated) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(401);
+    }
+});

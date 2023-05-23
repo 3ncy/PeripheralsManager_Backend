@@ -4,6 +4,8 @@ module.exports = router;
 
 const db = require('../db');
 
+//TODO: add the /profiles endpoint that returns all the user's profiles.
+// this requires euthentication - only works when the user is logged in
 
 // let profile = {
 //     id_profile: GUID,
@@ -14,6 +16,7 @@ const db = require('../db');
 //     ]
 // }
 
+//[auth]
 /// get a profile by it's id
 router.get('/:id', async (req, res) => {
     const id = req.params.id;
@@ -50,6 +53,10 @@ router.put('/:id', async (req, res) => {
             let result = db.addProfile(profile);
             isNew = true;
         } else {
+
+            //TODO: check if req.userID = oldProfile.userId
+            //if no, kick the user with 403 and exit the function.
+
             let result = db.updateProfile(profile);
         }
 
@@ -59,7 +66,7 @@ router.put('/:id', async (req, res) => {
             //I should check all the devices' device.id_user if they belong to the user trying to add the profile
 
             //TODO: verify and parse all the devices. Should prolly make a method in ./devices.js
-            let oldDevice = await db.getDevice(device.id_device);
+            let oldDevice = await db.getDevice(device.id_configuration);
             
             if (typeof oldDevice === 'undefined') {
                 let result = await db.addDevice(device); //TODO: figure out returning errors
@@ -89,6 +96,11 @@ router.put('/:id', async (req, res) => {
 // requires authentication
 router.delete('/:id', async (req, res) => {
     const id = req.params.id;
+
+    //TODO: check if req.userID = oldProfile.userId
+    //if no, kick the user with 403.
+    //for this, I'll have to first fetch the profile from db :/
+
 
     let result = db.deleteProfile(id); //TODO: error handling
     res.send("ok");

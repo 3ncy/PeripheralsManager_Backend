@@ -4,6 +4,8 @@ module.exports = router;
 
 const db = require('../db');
 
+const auth = require('../authMW');
+
 // let device = {
 //     id_configuration: GUID,
 //     name: "device name",
@@ -33,13 +35,17 @@ router.get('/:id', async (req, res) => {
 
 /// add or modify a device
 // requires authentication
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     let device = req.body;
 
-    const id = req.params.id; //todo: check together this id and the id from the object... I guess the one in url should be authoritative, or just return 400 and fuck off
+    const id = req.params.id; //TODO: check together this id and the id from the object... I guess the one in url should be authoritative, or just return 400 and fuck off
 
 
     let oldDevice = await db.getDevice(id);
+console.log("olddeice");
+console.log(oldDevice);
+console.log("newdive")
+console.log(device);
     if (typeof oldDevice === "undefined") { //device not found -> create new        
 
         let result = db.addDevice(device);//TODO: set status using the result variable
@@ -48,13 +54,23 @@ router.put('/:id', async (req, res) => {
 
     } else { //device found -> modify it
 
+        //TODO: check if req.userID = oldDevice.userId
+        //if no, kick the user with 403 and exit the function
+
+        if (req.id_user !== oldDevice.id_user) {
+            res.status(403).send("You are not authorized to edit this device.");
+            return;
+        }
+
         if (id != device.id_configuration) {
             res.status(400).send("IDs don't match!");
+            return;
         }
 
         //TODO: check if data is valid, (no nulls), Maybe I could extract the checking into middleware?
-        if (device.type !== 'audio' || device.type !== 'pointer') {
+        if (device.type !== 'audio' && device.type !== 'pointer') {
             res.status(400).send("Invalid device type");
+            return;
         }
 
         let result = db.updateDevice(device)//TODO: set status using the result variable

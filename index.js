@@ -37,6 +37,7 @@ app.use('/profiles', profilesRouter); //TODO: add the middleware for authenticat
 app.use('/devices', devicesRouter); //TODO: add the middleware for authentication
 
 //#region object signatures
+// maybe isn't even corrrect at this point lol. Keep it only as a reference, may not work xd
 const GUID = "guid"; const DEVICE = "device";
 let profile = {
     id: GUID,

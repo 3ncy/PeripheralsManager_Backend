@@ -16,7 +16,7 @@ module.exports = {
             device: {
                 type: "object",
                 properties: {
-                    id_device: {
+                    id_configuration: {
                         type: "GUID",
                         description: "",
                         example: ""

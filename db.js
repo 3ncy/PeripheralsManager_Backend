@@ -37,14 +37,14 @@ module.exports = {
         
         return await this.query(
             "INSERT INTO devices VALUES ($1::uuid, $2::text, $3::text, $4::integer, $5::uuid, $6::uuid);",
-            [device.id_device, device.name, device.type, device.attribute, device.id_user, device.id_profile]
+            [device.id_configuration, device.name, device.type, device.attribute, device.id_user, device.id_profile]
         );
     },
     async updateDevice(device) {
         
         return await this.query(
             "UPDATE devices SET name=$2::text, type=$3::text, attribute=$4::integer, id_user=$5::uuid, id_profile=$6::uuid WHERE devices.id_configuration=$1::uuid",
-            [device.id_device, device.name, device.type, device.attribute, device.id_user, device.id_profile]
+            [device.id_configuration, device.name, device.type, device.attribute, device.id_user, device.id_profile]
         );
     },
 

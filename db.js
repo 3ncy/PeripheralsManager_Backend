@@ -17,6 +17,9 @@ module.exports = {
     async getProfile(id) {
         return (await this.query('SELECT * FROM profiles WHERE id_profile = $1::uuid;', [id])).rows[0]; //TODO: handle errors lol        
     },
+    async getProfiles(id_user){
+        return (await this.query('SELECT * FROM profiles WHERE id_user = $1::uuid;', [id_user])).rows; //TODO: handle errors lol        
+    },
     async getProfileDevices(profileId) {
         return (await this.query(`SELECT * FROM devices WHERE id_profile = $1::uuid`, [profileId])).rows;
     },
@@ -41,7 +44,6 @@ module.exports = {
         );
     },
     async updateDevice(device) {
-        
         return await this.query(
             "UPDATE devices SET name=$2::text, type=$3::text, attribute=$4::integer, id_user=$5::uuid, id_profile=$6::uuid WHERE devices.id_configuration=$1::uuid",
             [device.id_configuration, device.name, device.type, device.attribute, device.id_user, device.id_profile]

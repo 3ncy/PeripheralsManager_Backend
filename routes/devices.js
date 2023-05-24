@@ -42,10 +42,7 @@ router.put('/:id', auth, async (req, res) => {
 
 
     let oldDevice = await db.getDevice(id);
-console.log("olddeice");
-console.log(oldDevice);
-console.log("newdive")
-console.log(device);
+
     if (typeof oldDevice === "undefined") { //device not found -> create new        
 
         let result = db.addDevice(device);//TODO: set status using the result variable
@@ -53,9 +50,6 @@ console.log(device);
         return;
 
     } else { //device found -> modify it
-
-        //TODO: check if req.userID = oldDevice.userId
-        //if no, kick the user with 403 and exit the function
 
         if (req.id_user !== oldDevice.id_user) {
             res.status(403).send("You are not authorized to edit this device.");

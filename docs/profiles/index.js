@@ -1,5 +1,29 @@
 module.exports = { //TODO: fill out the real strings and shit
     //TODO: add 401 and 403 to all endpoints that need it
+    '/profiles/' : {
+        get: {
+            tags: ["profiles"],
+            description: "Get all the user's profiles",
+            responses: {
+                200: {
+                    description: "ok",
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: "array",
+                                items: {
+                                    $ref: "#/components/schemas/profile"
+                                }
+                            }
+                        }
+                    }
+                },
+                401: {
+                    description: "not logged in"
+                }
+            }
+        }
+    },
     '/profiles/{id}': {
         get: {
             tags: ["profiles"],

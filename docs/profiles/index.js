@@ -19,7 +19,7 @@ module.exports = { //TODO: fill out the real strings and shit
                     }
                 },
                 401: {
-                    description: "not logged in"
+                    description: "Not logged in. Refer to the response body for more info."
                 }
             }
         }
@@ -27,7 +27,7 @@ module.exports = { //TODO: fill out the real strings and shit
     '/profiles/{id}': {
         get: {
             tags: ["profiles"],
-            description: "",
+            description: "Get a configuration profile by it's ID.",
             parameters: [
                 {
                     name: "id",
@@ -36,6 +36,7 @@ module.exports = { //TODO: fill out the real strings and shit
                         $ref: "#/components/schemas/id"
                     },
                     required: true,
+                    description: "The profile's GUID"
                 }
             ],
             responses: {
@@ -50,13 +51,13 @@ module.exports = { //TODO: fill out the real strings and shit
                     },
                 },
                 404: {
-                    description: "not found"
+                    description: "The profile with this ID wasn't found."
                 }
             }
         },
         put: {
             tags: ["profiles"],
-            description: "",
+            description: "Create or update a profile.",
             parameters: [
                 {
                     name: "id",
@@ -65,7 +66,7 @@ module.exports = { //TODO: fill out the real strings and shit
                         $ref: "#/components/schemas/id"
                     },
                     required: true,
-                    description: "GUID" //TODO: add description to all other places too
+                    description: "The profile's GUID" //TODO: add description to all other places too
                 }
             ],
             requestBody: {
@@ -78,12 +79,14 @@ module.exports = { //TODO: fill out the real strings and shit
                 },
             },
             responses: {
-                200: { description: "ok" },
+                200: { description: "The profile was updated" },
                 201: {
-                    description: "created"
+                    description: "A new profile was created."
                     //TODO: somehow note that the Location header contains the URL on how to GET the created thing
                 },
-                400: { description: "bad reques" }
+                400: { description: "Incorrect data format/values" },
+                401: { description: "Invalid login credentials."},
+                403: { description: "You are not authorized to update this resource."},
             }
         },
         delete: {
@@ -97,12 +100,13 @@ module.exports = { //TODO: fill out the real strings and shit
                         $ref: "#/components/schemas/id"
                     },
                     required: true,
+                    description: "The profile's GUID" 
                 }
             ],
             responses: {
-                200: { description: "ok" },
-                400: { description: "bad request" },
-                404: { description: "not found" },
+                200: { description: "Ok, deleted." },
+                400: { description: "Bad request." },
+                404: { description: "The profile was not found." },
             }
         },
     }

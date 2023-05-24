@@ -21,11 +21,12 @@ router.post('/register', (req, res) => {
     //  on 201 return the object, but only {name, id}
 });
 
-router.post('/login', (req, res) => {
-    // find user by name in db
-    // check password and password hash
-    // reply 200/400/404
-});
+/// there is no more need for login, as the user is logged in each time they send a request. "Loggin in" will only occur on the client and it mean that the client will rememver the reds to use them
+// router.post('/login', (req, res) => {
+//     // find user by name in db
+//     // check password and password hash
+//     // reply 200/400/404
+// });
 
 //NOTE: logout? 🤔
 

@@ -1,16 +1,40 @@
-const register = require('./register');
-const login = require('./login');
-
-module.exports = {
-    //TODO: might join those into one file if they don't get too long, might b easier to do stuff then
+module.exports = {    
     '/auth/register': {
-        ...register,
-    },
-    '/auth/login':{
-        ...login,
+        post: {
+            tags: ["auth"],
+            description: "Add a user",
+            parameters: [],
+            requestBody: {
+                content: {
+                    // content-type
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/userRegisterRequest"
+                        },
+                    },
+                },
+            },
+            responses: {
+                201: {
+                    description: "User created successfully"
+                },
+                400: {
+                    description: "One or more values were invalid."
+                },
+            },
+        },
     },
     '/auth/public-key': {
-        //TODO: document this endpoint. It simply returns the current public key used by the server.
         //this isn't used by the official client, that one has the pub key hardcoded, cause it's more secure. I don't care.
+        get: {
+            tags: ["auth"],
+            description: "Returns the server's public key that can be used for encrypting the auth headers.",
+            parameters: [],
+            responses: {
+                200: {
+                    description: "The server's public key in the OpenSSH format"
+                }
+            }
+        }
     }
 }

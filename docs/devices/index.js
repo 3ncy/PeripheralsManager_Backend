@@ -1,9 +1,9 @@
 module.exports = { //TODO: fill out the real strings and values
-    //TODO: add 401 and 403 to all endpoints that need it
+
     '/devices/{id}': {
         get: {
             tags: ["devices"],
-            description: "",
+            description: "Get a device details by it's ID.",
             parameters: [
                 {
                     name: "id",
@@ -12,6 +12,7 @@ module.exports = { //TODO: fill out the real strings and values
                         $ref: "#/components/schemas/id"
                     },
                     required: true,
+                    description: "The device's GUID" 
                 }
             ],
             responses: {
@@ -32,7 +33,7 @@ module.exports = { //TODO: fill out the real strings and values
         },
         put: {
             tags: ["devices"],
-            description: "",
+            description: "Create or update a device object.",
             parameters: [
                 {
                     name: "id",
@@ -41,7 +42,7 @@ module.exports = { //TODO: fill out the real strings and values
                         $ref: "#/components/schemas/id"
                     },
                     required: true,
-                    description: "GUID" //TODO: add description to all other places too
+                    description: "The device's GUID" 
                 },
             ],
             requestBody: {
@@ -58,17 +59,19 @@ module.exports = { //TODO: fill out the real strings and values
                     description: "Successfuly edited the device."
                 },
                 201: {
-                    description: "created"
+                    description: "The device has been created."
                     //TODO: somehow note that the Location header contains the URL on how to GET the created thing
                 },
                 400: {
                     description: "Some fields have invalid values. See response body for more details."
-                }
+                },
+                401: { description: "Invalid login credentials."},
+                403: { description: "You are not authorized to update this resource."},
             }
         },
         delete: {
             tags: ["devices"],
-            description: "",
+            description: "Delete a specific device.",
             parameters: [
                 {
                     name: "id",
@@ -77,15 +80,13 @@ module.exports = { //TODO: fill out the real strings and values
                         $ref: "#/components/schemas/id"
                     },
                     required: true,
+                    description: "The device's GUID" 
                 }
             ],
             responses: {
                 405: {
                     description: "Deleting devices isn't supported. They will get deleted with the user account."
                 }
-                // 200: { description: "ok" },
-                // 400: { description: "bad request" },
-                // 404: { description: "not found" },
             }
         },
     },

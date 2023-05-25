@@ -7,7 +7,8 @@ const { createHash, privateDecrypt } = require('crypto');
 module.exports = async (req, res, next) => {
 
     if (!req.headers["x-username"] || !req.headers["x-password"] || !req.headers["x-encrypted"]) {
-        res.status(401).send("You need to provide the 'x-username' and 'x-password' headers. It is recommended to encrypt them using the server's public key.")
+        // res.status(401).send("You need to provide the 'x-username', 'x-password' as 'x-encrypted' headers. It is recommended to encrypt them using the server's public key.")
+        res.status(401).send("You need to provide the 'x-username', 'x-password' as 'x-encrypted' headers. Currently only the 'true' value is supported for the 'x-encryped' header.");
         return;
     }
 
@@ -27,13 +28,13 @@ module.exports = async (req, res, next) => {
         // res.send("decrypting..... enc data: " + JSON.stringify(authHeaders));
         // return;
 
-        res.status(400).send("We are sorry, but encrypted headers are not yet supported. They will be supported in the future versions. To keep up with the updates, you can visit https://github.com/3ncy/PeripheralsManager_Backend.");
+        res.status(401).send("We are sorry, but encrypted headers are not yet supported. They will be supported in the future versions. To keep up with the updates, you can visit https://github.com/3ncy/PeripheralsManager_Backend.");
         return;
     }
 
 
     if ((authHeaders.encrypted !== 'true' && authHeaders.encrypted !== 'false') || !authHeaders.username || !authHeaders.password) {
-        res.status(400).send("Please make sure you the headers contain valid data. The 'x-encrypted' header only allows the values 'true' or 'false'. If encrypted is set to true, the header must be encrypted using the server's public key.\nreceived header: " + JSON.stringify(authHeaders));
+        res.status(401).send("Please make sure you the headers contain valid data. The 'x-encrypted' header only allows the values 'true' or 'false'. If encrypted is set to true, the header must be encrypted using the server's public key.\nreceived headers: " + JSON.stringify(authHeaders));
         return;
     }
 

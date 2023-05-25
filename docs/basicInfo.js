@@ -9,5 +9,6 @@ module.exports = {
         //     url: "martin.rmii.cz",
         //     email: "", //idk how to get the noreply github and idrc
         // },
+        // uhhh, apparently basePath is deprecated, so I'm gonna move it to ./servers.js        
     },  
 };

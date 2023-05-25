@@ -1,6 +1,6 @@
 module.exports = { //TODO: fill out the real strings and stuff
     //TODO: add 401 and 403 to all endpoints that need it
-    '/profiles/' : {
+    '/profiles/': {
         get: {
             tags: ["profiles"],
             description: "Get all the user's profiles",
@@ -17,6 +17,9 @@ module.exports = { //TODO: fill out the real strings and stuff
                             }
                         }
                     }
+                },
+                400: {
+                    description: "Bad request. See response body for details.",
                 },
                 401: {
                     description: "Not logged in. Refer to the response body for more info."
@@ -85,8 +88,8 @@ module.exports = { //TODO: fill out the real strings and stuff
                     //TODO: somehow note that the Location header contains the URL on how to GET the created thing
                 },
                 400: { description: "Incorrect data format/values" },
-                401: { description: "Invalid login credentials."},
-                403: { description: "You are not authorized to update this resource."},
+                401: { description: "Invalid login credentials." },
+                403: { description: "You are not authorized to update this resource." },
             }
         },
         delete: {
@@ -100,7 +103,7 @@ module.exports = { //TODO: fill out the real strings and stuff
                         $ref: "#/components/schemas/id"
                     },
                     required: true,
-                    description: "The profile's GUID" 
+                    description: "The profile's GUID"
                 }
             ],
             responses: {

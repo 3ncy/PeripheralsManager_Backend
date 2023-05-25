@@ -132,3 +132,5 @@ dist
 
 # private key lol
 id_rsa.opk
+id_rsa.opubk
+pubkey.pem

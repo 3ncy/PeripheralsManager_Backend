@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 module.exports = router;
 
+const { publicEncrypt, privateDecrypt } = require('crypto');
+
+
 const db = require('../db');
 
 router.get('/', (req, res) => {
@@ -16,7 +19,8 @@ router.get('/health', (req, res) => {
 
 const auth = require('../authMW')
 router.post('/authtest', auth, (req, res) => {
-    if (req.validated) {
+
+    if (req.id_user) {
         res.sendStatus(200);
     } else {
         res.sendStatus(401);

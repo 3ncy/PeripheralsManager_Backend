@@ -61,7 +61,7 @@ router.put('/:id', auth, async (req, res) => {
 
     let profile = req.body;
 
-    const id = req.params.id; //todo: check together this id and the id from the object... I guess the one in url should be authoritative, or just return 400 and fuck off
+    const id = req.params.id; //todo: check together this id and the id from the object... I guess the one in url should be authoritative, or just return 400 and f- off
 
     let isNew = false;
     //I should prolly overwrite the profile.id_user with the current logged user's guid

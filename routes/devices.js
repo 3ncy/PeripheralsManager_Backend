@@ -38,8 +38,7 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', auth, async (req, res) => {
     let device = req.body;
 
-    const id = req.params.id; //TODO: check together this id and the id from the object... I guess the one in url should be authoritative, or just return 400 and fuck off
-
+    const id = req.params.id; //TODO: check together this id and the id from the object... I guess the one in url should be authoritative, or just return 400 and f- off
 
     let oldDevice = await db.getDevice(id);
 

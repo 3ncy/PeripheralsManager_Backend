@@ -1,4 +1,4 @@
-module.exports = { //TODO: fill out the real strings and shit
+module.exports = { //TODO: fill out the real strings and stuff
     //TODO: add 401 and 403 to all endpoints that need it
     '/profiles/' : {
         get: {
